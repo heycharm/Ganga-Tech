@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Loader from '../components/Loader';
-import Alert from '../components/Alert';
-import Settings from '../components/Settings';
-import Article from '../components/article';
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
+import Alert from "../components/Alert";
+import Settings from "../components/Settings";
+import Article from "../components/article";
 import { gsap } from "gsap";
-import DataMatch from "../components/DataMatch"
-import quality from '../data/quality';
+import DataMatch from "../components/DataMatch";
+import quality from "../data/quality";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +18,7 @@ const Home = () => {
   const location = useLocation();
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [isSettingsVisible, setIsSettingsVisible] = useState(false);
-  const[isArticlesVisible, setArticlesVisible] =useState(false);
+  const [isArticlesVisible, setArticlesVisible] = useState(false);
   const [activeCircle, setActiveCircle] = useState(1);
   const navigate = useNavigate();
 
@@ -32,33 +32,32 @@ const Home = () => {
   };
   const handleArticleClick = () => {
     setArticlesVisible((prev) => !prev);
-
   };
 
-    const handleCircleClick = (circleNum) => {
-      setActiveCircle(circleNum);
-      switch (circleNum) {
-        case 1:
-          navigate('/Home');
-          break;
-        case 2:
-          navigate('/Dashboard');
-          break;
-        case 3:
-          navigate('/Map');
-          break;
-        default:
-          break;
-      }
-    };
-    useEffect(() => {
-      // Save location in localStorage if available
-      const { location: stateLocation } = location.state || {};
-      if (stateLocation) {
-        setUserLocation(stateLocation);
-        localStorage.setItem("userLocation", stateLocation);
-      }
-    }, [location.state]);
+  const handleCircleClick = (circleNum) => {
+    setActiveCircle(circleNum);
+    switch (circleNum) {
+      case 1:
+        navigate("/Home");
+        break;
+      case 2:
+        navigate("/Dashboard");
+        break;
+      case 3:
+        navigate("/Map");
+        break;
+      default:
+        break;
+    }
+  };
+  useEffect(() => {
+    // Save location in localStorage if available
+    const { location: stateLocation } = location.state || {};
+    if (stateLocation) {
+      setUserLocation(stateLocation);
+      localStorage.setItem("userLocation", stateLocation);
+    }
+  }, [location.state]);
   const navigate2 = useNavigate();
 
   useEffect(() => {
@@ -81,34 +80,73 @@ const Home = () => {
   const determineClass = (todayData) => {
     if (!todayData) {
       console.log("Data is missing or null!");
-      return "Unknown"; // Early return if no data
+      return "Unknown";
     }
     const { ph, do: dissolvedOxygen, bod, totalColiform } = todayData;
-    console.log("ph:", ph, "dissolvedOxygen:", dissolvedOxygen, "bod:", bod, "totalColiform:", totalColiform);
+    console.log(
+      "ph:",
+      ph,
+      "dissolvedOxygen:",
+      dissolvedOxygen,
+      "bod:",
+      bod,
+      "totalColiform:",
+      totalColiform
+    );
 
-    if (ph >= 6.5 && ph <= 8.5 && dissolvedOxygen >= 6 && bod <= 2 && totalColiform <= 50) {
+    if (
+      ph >= 6.5 &&
+      ph <= 8.5 &&
+      dissolvedOxygen >= 6 &&
+      bod <= 2 &&
+      totalColiform <= 50
+    ) {
       return "Class A";
-    } else if (ph >= 6.5 && ph <= 8.5 && dissolvedOxygen >= 5 && bod <= 3 && totalColiform <= 500) {
+    } else if (
+      ph >= 6.5 &&
+      ph <= 8.5 &&
+      dissolvedOxygen >= 5 &&
+      bod <= 3 &&
+      totalColiform <= 500
+    ) {
       return "Class B";
-    } else if (ph >= 6 && ph <= 9 && dissolvedOxygen >= 4 && bod <= 3 && totalColiform <= 5000) {
+    } else if (
+      ph >= 6 &&
+      ph <= 9 &&
+      dissolvedOxygen >= 4 &&
+      bod <= 3 &&
+      totalColiform <= 5000
+    ) {
       return "Class C";
-    } else if (ph >= 6.5 && ph <= 8.5 && dissolvedOxygen >= 4 && bod <= 3 && totalColiform <= 5000) {
+    } else if (
+      ph >= 6.5 &&
+      ph <= 8.5 &&
+      dissolvedOxygen >= 4 &&
+      bod <= 3 &&
+      totalColiform <= 5000
+    ) {
       return "Class D";
-    } else if (ph >= 6 && ph <= 8.5 && dissolvedOxygen >= 4 && bod <= 3 && totalColiform <= 5000) {
+    } else if (
+      ph >= 6 &&
+      ph <= 8.5 &&
+      dissolvedOxygen >= 4 &&
+      bod <= 3 &&
+      totalColiform <= 5000
+    ) {
       return "Class E";
     } else {
       return "Unknown";
     }
   };
 
-
+  //retunrs the quality.jsx array
   console.log("quality array:", quality);
 
-  // Check if `waterClass` matches a valid class
+  //class: class a, b, c, d, e
   const waterClass = determineClass(todayData);
   console.log("Determined waterClass:", waterClass);
 
-  // Find the corresponding quality data
+  //Quality: Avg, Severe, wagerah wagerah
   const currentQuality = quality.find((q) => q.class === waterClass);
   console.log("currentQuality found:", currentQuality);
 
@@ -143,9 +181,7 @@ const Home = () => {
                 />
                 <circle cx="16" cy="13" r="4" fill="none" />
               </svg>
-              <span className="text-black font-semibold">
-              {userLocation}
-              </span>
+              <span className="text-black font-semibold">{userLocation}</span>
             </div>
             <div className="flex gap-3">
               <button
@@ -225,7 +261,9 @@ const Home = () => {
               >
                 {currentQuality?.title || "N/A"}
               </h1>
-              <p className="text-black mt-1  text-[16px]">{currentQuality?.class || "N/A"}</p>
+              <p className="text-black mt-1  text-[16px]">
+                {currentQuality?.class || "N/A"}
+              </p>
               <p className="text-black px-2 mt-1 text-[14px]">
                 {currentQuality?.subtitle || "N/A"}
               </p>
@@ -288,7 +326,6 @@ const Home = () => {
                 </div>
               </div>
               <div className="flex items-center justify-between mb-2 ">
-
                 <div className="flex items-center gap-2 w-1/2">
                   <span>
                     <svg
@@ -345,34 +382,83 @@ const Home = () => {
             </div>
           </div>
           <div className="flex gap-2 justify-center fixed bottom-0 left-0 right-0 p-4">
-              <button
-                className={`text-white text-xl animate-fadeIn ${
-                  activeCircle === 1 ? 'bg-blue-500 rounded-full p-2' : ''
-                }`}
-                onClick={() => handleCircleClick(1)}
+            <button
+              className={`text-white text-xl animate-fadeIn ${
+                activeCircle === 1 ? "bg-blue-500 rounded-full p-2" : ""
+              }`}
+              onClick={() => handleCircleClick(1)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M5 12H3l9-9l9 9h-2M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6"/></g></svg>
-              </button>
+                <g
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                >
+                  <path d="M5 12H3l9-9l9 9h-2M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" />
+                  <path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6" />
+                </g>
+              </svg>
+            </button>
 
-              <button
-                className={`text-white text-xl ${
-                  activeCircle === 2 ? 'bg-blue-500 rounded-full p-2' : ''
-                }`}
-                onClick={() => handleCircleClick(2)}
+            <button
+              className={`text-white text-xl ${
+                activeCircle === 2 ? "bg-blue-500 rounded-full p-2" : ""
+              }`}
+              onClick={() => handleCircleClick(2)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path fill="currentColor" fill-opacity="0.16" d="M8.4 15H5.6A1.6 1.6 0 0 0 4 16.6v2.8A1.6 1.6 0 0 0 5.6 21h2.8a1.6 1.6 0 0 0 1.6-1.6v-2.8A1.6 1.6 0 0 0 8.4 15m10-12h-2.8A1.6 1.6 0 0 0 14 4.6v2.8A1.6 1.6 0 0 0 15.6 9h2.8A1.6 1.6 0 0 0 20 7.4V4.6A1.6 1.6 0 0 0 18.4 3"/><path stroke="currentColor" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5" d="M8.4 3H5.6A1.6 1.6 0 0 0 4 4.6v4.8A1.6 1.6 0 0 0 5.6 11h2.8A1.6 1.6 0 0 0 10 9.4V4.6A1.6 1.6 0 0 0 8.4 3Zm0 12H5.6A1.6 1.6 0 0 0 4 16.6v2.8A1.6 1.6 0 0 0 5.6 21h2.8a1.6 1.6 0 0 0 1.6-1.6v-2.8A1.6 1.6 0 0 0 8.4 15Zm10-12h-2.8A1.6 1.6 0 0 0 14 4.6v2.8A1.6 1.6 0 0 0 15.6 9h2.8A1.6 1.6 0 0 0 20 7.4V4.6A1.6 1.6 0 0 0 18.4 3Zm0 10h-2.8a1.6 1.6 0 0 0-1.6 1.6v4.8a1.6 1.6 0 0 0 1.6 1.6h2.8a1.6 1.6 0 0 0 1.6-1.6v-4.8a1.6 1.6 0 0 0-1.6-1.6Z"/></g></svg>
-              </button>
+                <g fill="none">
+                  <path
+                    fill="currentColor"
+                    fill-opacity="0.16"
+                    d="M8.4 15H5.6A1.6 1.6 0 0 0 4 16.6v2.8A1.6 1.6 0 0 0 5.6 21h2.8a1.6 1.6 0 0 0 1.6-1.6v-2.8A1.6 1.6 0 0 0 8.4 15m10-12h-2.8A1.6 1.6 0 0 0 14 4.6v2.8A1.6 1.6 0 0 0 15.6 9h2.8A1.6 1.6 0 0 0 20 7.4V4.6A1.6 1.6 0 0 0 18.4 3"
+                  />
+                  <path
+                    stroke="currentColor"
+                    stroke-linejoin="round"
+                    stroke-miterlimit="10"
+                    stroke-width="1.5"
+                    d="M8.4 3H5.6A1.6 1.6 0 0 0 4 4.6v4.8A1.6 1.6 0 0 0 5.6 11h2.8A1.6 1.6 0 0 0 10 9.4V4.6A1.6 1.6 0 0 0 8.4 3Zm0 12H5.6A1.6 1.6 0 0 0 4 16.6v2.8A1.6 1.6 0 0 0 5.6 21h2.8a1.6 1.6 0 0 0 1.6-1.6v-2.8A1.6 1.6 0 0 0 8.4 15Zm10-12h-2.8A1.6 1.6 0 0 0 14 4.6v2.8A1.6 1.6 0 0 0 15.6 9h2.8A1.6 1.6 0 0 0 20 7.4V4.6A1.6 1.6 0 0 0 18.4 3Zm0 10h-2.8a1.6 1.6 0 0 0-1.6 1.6v4.8a1.6 1.6 0 0 0 1.6 1.6h2.8a1.6 1.6 0 0 0 1.6-1.6v-4.8a1.6 1.6 0 0 0-1.6-1.6Z"
+                  />
+                </g>
+              </svg>
+            </button>
 
-              <button
-                className={`text-white text-xl ${
-                  activeCircle === 3 ? 'bg-blue-500 rounded-full p-2' : ''
-                }`}
-                onClick={() => handleCircleClick(3)}
+            <button
+              className={`text-white text-xl ${
+                activeCircle === 3 ? "bg-blue-500 rounded-full p-2" : ""
+              }`}
+              onClick={() => handleCircleClick(3)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 14c2.206 0 4-1.794 4-4s-1.794-4-4-4s-4 1.794-4 4s1.794 4 4 4m0-6c1.103 0 2 .897 2 2s-.897 2-2 2s-2-.897-2-2s.897-2 2-2"/><path fill="currentColor" d="M11.42 21.814a1 1 0 0 0 1.16 0C12.884 21.599 20.029 16.44 20 10c0-4.411-3.589-8-8-8S4 5.589 4 9.995c-.029 6.445 7.116 11.604 7.42 11.819M12 4c3.309 0 6 2.691 6 6.005c.021 4.438-4.388 8.423-6 9.73c-1.611-1.308-6.021-5.294-6-9.735c0-3.309 2.691-6 6-6"/></svg>
-              </button>
-            </div>
-
+                <path
+                  fill="currentColor"
+                  d="M12 14c2.206 0 4-1.794 4-4s-1.794-4-4-4s-4 1.794-4 4s1.794 4 4 4m0-6c1.103 0 2 .897 2 2s-.897 2-2 2s-2-.897-2-2s.897-2 2-2"
+                />
+                <path
+                  fill="currentColor"
+                  d="M11.42 21.814a1 1 0 0 0 1.16 0C12.884 21.599 20.029 16.44 20 10c0-4.411-3.589-8-8-8S4 5.589 4 9.995c-.029 6.445 7.116 11.604 7.42 11.819M12 4c3.309 0 6 2.691 6 6.005c.021 4.438-4.388 8.423-6 9.73c-1.611-1.308-6.021-5.294-6-9.735c0-3.309 2.691-6 6-6"
+                />
+              </svg>
+            </button>
+          </div>
         </>
       )}
     </div>
