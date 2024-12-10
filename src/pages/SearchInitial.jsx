@@ -10,7 +10,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import gsap from "gsap";
-import Loader from "../components/Loader"; 
+import Loader from "../components/Loader";
 
 const SearchInitial = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -132,7 +132,7 @@ const SearchInitial = () => {
     <>
       <ToastContainer />
       {isLoading ? (
-        <Loader /> 
+        <Loader />
       ) : (
         <div className="relative z-20 flex flex-col items-center justify-start pt-20 h-screen text-white font-poppins">
           <h1
@@ -227,10 +227,7 @@ const SearchInitial = () => {
             <p ref={didYouKnowRef} className="font-bold mb-2 text-2xl">
               Did You Know?
             </p>
-            <div
-              ref={factRef}
-              className="text-sm sm:text-base md:text-lg px-4"
-            >
+            <div ref={factRef} className="text-sm sm:text-base md:text-lg px-4">
               <p>{GangaFacts[currentFactIndex].fact}</p>
             </div>
           </div>
