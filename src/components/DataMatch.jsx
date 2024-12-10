@@ -22,7 +22,10 @@ const DataMatch = ({ setTodayData }) => {
       date.setDate(today.getDate() + i); // Adjust the date by i days
       const formattedDate = formatDate(date); // Format the adjusted date
 
+      setData(tempData);
+      
       tempData.push({
+        id: i + 1,
         date: formattedDate,
         ph: (Math.random() * 2 + 7).toFixed(2), // Random ph value between 7.0 and 9.0
         do: (Math.random() * 2 + 6).toFixed(2), // Random DO value between 6.0 and 8.0
@@ -30,94 +33,17 @@ const DataMatch = ({ setTodayData }) => {
         totalColiform: Math.floor(Math.random() * 1000), // Random total coliform value
       });
     }
-    setData(tempData); // Set the data to state
+
+    
 
     // Check if today's date matches any date in the data array and update values if needed
     const todayData = tempData.find((item) => item.date === currentDate);
     if (todayData && typeof setTodayData === "function") {
-        
-      // If today's data matches and setTodayData is a function, pass it to the parent component
       setTodayData(todayData);
     }
-  }, [setTodayData]);
+  }, []);
 
-//   const determineClass = (todayData) => {
-//     const { ph, do: dissolvedOxygen, bod, totaColiform } = todayData;
-  
-//     if (
-//       ph >= 6.5 &&
-//       ph <= 8.5 &&
-//       dissolvedOxygen >= 6 &&
-//       bod <= 2 &&
-//       totaColiform <= 50
-//     ) {
-//       return "Class A";
-//     } else if (
-//       ph >= 6.5 &&
-//       ph <= 8.5 &&
-//       dissolvedOxygen >= 5 &&
-//       bod <= 3 &&
-//       totaColiform <= 500
-//     ) {
-//       return "Class B";
-//     } else if (
-//       ph >= 6 &&
-//       ph <= 9 &&
-//       dissolvedOxygen >= 4 &&
-//       bod <= 3 &&
-//       totaColiform <= 5000
-//     ) {
-//       return "Class C";
-//     } else if (
-//       ph >= 6.5 &&
-//       ph <= 8.5 &&
-//       dissolvedOxygen >= 4 &&
-//       bod <= 3 &&
-//       totaColiform <= 5000
-//     ) {
-//       return "Class D";
-//     } else if (
-//       ph >= 6 &&
-//       ph <= 8.5 &&
-//       dissolvedOxygen >= 4 &&
-//       bod <= 3 &&
-//       totaColiform <= 5000
-//     ) {
-//       return "Class E";
-//     } else {
-//       return "Unknown";
-//     }
-//   };
-  
-
-  return (
-    <div>
-      {/* Table commented out for now */}
-      {/* Uncomment to display data */}
-      {/* <table>
-        <thead>
-          <tr>
-            <th>DATE</th>
-            <th>PH</th>
-            <th>DO</th>
-            <th>BOD</th>
-            <th>COLIFORM</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>{item.date}</td>
-              <td>{item.ph}</td>
-              <td>{item.do}</td>
-              <td>{item.bod}</td>
-              <td>{item.totalColiform}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
-    </div>
-  );
+  return null; // No need to render anything, data is sent to parent component
 };
 
 export default DataMatch;
