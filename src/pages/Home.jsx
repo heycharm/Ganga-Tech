@@ -192,7 +192,7 @@ const Home = () => {
           </div>
 
           {/* Combined White Box Section */}
-          <div className="bg-white mx-6 p-4  rounded-3xl text-center mb-1 relative z-10 animate-slideDown h-[20rem]">
+          <div className="bg-white mx-6 p-4  rounded-3xl text-center mb-3 relative z-10 animate-slideDown h-[20rem]">
             <div>
               <div className="article flex items-center justify-between ">
                 <button onClick={handleArticleClick}>
