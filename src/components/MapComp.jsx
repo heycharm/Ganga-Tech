@@ -1,69 +1,54 @@
-import React, { useEffect } from "react";
-import GangaLocations from "../data/GangaLocations"
-// import { OlaMaps } from '../OlaMaps/olamaps-js-sdk.es'
-// import '../OlaMaps/style.css';
-
+import React, { useEffect, useRef } from "react";
+import { Map, View } from "ol";
+import TileLayer from "ol/layer/Tile";
+import OSM from "ol/source/OSM";
+import "ol/ol.css";
 
 const MapComp = ({ selectedLocation, waterData }) => {
-    <>
-    <h1>HELLO</h1>
-    </>
-   
-//   useEffect(() => {
-//     const checkSDKLoaded = () => {
-//         if (window.Ola) {
-//           initializeMap();
-//         } else {
-//           console.error("Ola Maps SDK is not loaded yet.");
-//           setTimeout(checkSDKLoaded, 100); // Retry after 100ms
-//         }};
-      
-    //   const olaMaps = new olaMaps({
-    //     apiKey: rxoj0kIXPPc5C0S2RwKxlr9DqWXbznUtpoqsytwU,
-    // })
-    // const map = new OlaMaps.Map("map", {
-    //   center: [25.0, 85.0], // Default center point for the map
-    //   zoom: 6, // Adjust zoom to cover all locations
-    //   apiKey: "rxoj0kIXPPc5C0S2RwKxlr9DqWXbznUtpoqsytwU", // Replace with your Ola Maps API Key
-    // });
+  const mapRef = useRef(null);
+  const mapInstance = useRef(null);
 
-    // const myMap = olaMaps.init({
-    //     style: "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json",
-    //     container: 'map',
-    //     center: [25.0, 85.0],
-    //     zoom: 6
-    //   })
-    // Find the selected location in GangaLocations
-//     const location = GangaLocations.find(
-//       (loc) => loc.name.toLowerCase() === selectedLocation.toLowerCase()
-//     );
+  useEffect(() => {
+    // Initialize the map
+    mapInstance.current = new Map({
+      target: mapRef.current,
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+        }),
+      ],
+      view: new View({
+        center: [85.0, 25.0], // Default coordinates
+        zoom: 6,
+        projection: "EPSG:4326",
+      }),
+    });
+  }, []);
 
-//     if (location) {
-//       // Center map on the selected location
-//       myMap.setView([location.lat, location.lng], 10);
+  useEffect(() => {
+    if (!selectedLocation || !waterData || !mapInstance.current) return;
 
-//       // Add a marker for the selected location
-//       const marker = new OlaMaps.Marker([location.lat, location.lng]).addTo(map);
+    // Pan to the selected location
+    const view = mapInstance.current.getView();
+    const { lat, lng } = selectedLocation; // Extract latitude and longitude
+    view.setCenter([lng, lat]);
+    view.setZoom(10);
 
-//       // Get water data for the location
-//       const { ph, do: dissolvedOxygen, bod, totalColiform } = waterData;
+    // Log the water quality data (you can display this in a popup or overlay)
+    console.log("Water Data for Location:", waterData);
+  }, [selectedLocation, waterData]);
 
-//       // Bind popup with water quality data
-//       marker.bindPopup(`
-//         <div>
-//           <h3>${location.name}</h3>
-//           <p><strong>PH:</strong> ${ph}</p>
-//           <p><strong>DO:</strong> ${dissolvedOxygen}</p>
-//           <p><strong>BOD:</strong> ${bod}</p>
-//           <p><strong>Total Coliform:</strong> ${totalColiform}</p>
-//         </div>
-//       `);
-//     } else {
-//       console.error("Selected location not found in GangaLocations.");
-//     }
-//   }, [selectedLocation, waterData]);
-
-//   return <div id="map" style={{ width: "100%", height: "500px" }}></div>;
+  return (
+    <div
+      id="map"
+      ref={mapRef}
+      style={{
+        width: "100%",
+        height: "500px",
+        border: "1px solid #ddd",
+      }}
+    ></div>
+  );
 };
 
 export default MapComp;
